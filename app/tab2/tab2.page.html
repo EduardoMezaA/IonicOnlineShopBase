@@ -45,4 +45,33 @@
     <ion-label>Total:</ion-label>
     <ion-note slot="end" class="total-amount">{{ cart.total | currency:'MXN':'symbol':'1.2-2' }}</ion-note>
   </ion-item>
+  <ion-row>
+    <ion-button color="secondary" fill="solid" shape="round" (click)="clearCart()" [disabled]="isCartEmpty()">
+      <ion-icon name="card-outline"></ion-icon>
+      Comprar
+    </ion-button>
+  </ion-row>
+
+  
+  <h1><ion-icon name="time-outline"></ion-icon> Historial de Compras</h1>
+  <ion-grid>
+    <ion-row>
+      <div *ngFor="let yeet of buyszaza; index as i" style="display: inherit;">
+        <ion-col size="12">
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>
+                {{yeet.date}}
+              </ion-card-title>
+              
+            </ion-card-header>
+            <ion-card-content>
+              <ion-badge color="primary">{{yeet.total|currency}}</ion-badge>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </div>
+
+    </ion-row>
+  </ion-grid>
 </ion-content>

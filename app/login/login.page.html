@@ -1,25 +1,21 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>LOGIN 🥴</ion-title>
+    <ion-title>Iniciar Sesión</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-    <form [formGroup]="productFormxd">
-      <ion-list lines="full" >
-        <ion-item>
-          <ion-label position="floating">Nombre de Usuario</ion-label>
-          <ion-input type="text" formControlName="username"></ion-input>
-        </ion-item>
-  
-        <ion-item>
-          <ion-label position="floating">Contraseña</ion-label>
-          <ion-input type="password" formControlName="password"></ion-input>
-        </ion-item>
-      </ion-list>
-      <ion-button expand="block" type="submit" [disabled]="!productFormxd.valid"
-        (click)="loginYeet()">Iniciar Sesión</ion-button>
-    </form>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <ion-item>
+      <ion-label position="floating">Usuario</ion-label>
+      <ion-input formControlName="username" type="text"></ion-input>
+    </ion-item>
 
-    <p>Prueba: Admin 123</p>
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input formControlName="password" type="password"></ion-input>
+    </ion-item>
+
+    <ion-button expand="full" type="submit" [disabled]="!loginForm.valid">Iniciar Sesión</ion-button>
+  </form>
 </ion-content>

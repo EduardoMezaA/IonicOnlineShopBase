@@ -7,9 +7,17 @@
 
 <ion-content [fullscreen]="true">  
   <ion-fab vertical="top" horizontal="end" slot="fixed" [edge]="true">
-    <ion-fab-button (click)="openAddProductPage()">
-      <ion-icon name="add"></ion-icon>
+    <ion-fab-button>
+      <ion-icon name="chevron-down-circle"></ion-icon>
     </ion-fab-button>
+    <ion-fab-list side="bottom">
+      <ion-fab-button (click)="openProductAddPage()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
   </ion-fab>
   <ion-grid>
     <ion-row>
@@ -52,14 +60,19 @@
             {{product.description}}
           </ion-card-content>
           <ion-row>
-            <ion-col>
-              <ion-button expand="block" (click)="openUpdateProductPage(i)" color="warning">
+            <!-- <ion-col>
+              <ion-button expand="block" (click)="openUpdateProductPage(product.id)" color="warning">
                 <ion-icon name="refresh-outline"></ion-icon>
+              </ion-button>
+            </ion-col> -->
+            <ion-col>
+              <ion-button expand="block" (click)="deleteProduct(product.id)" color="danger">
+                <ion-icon name="trash-outline"></ion-icon>
               </ion-button>
             </ion-col>
             <ion-col>
-              <ion-button expand="block" (click)="removeProduct(product)" color="danger">
-                <ion-icon name="trash-outline"></ion-icon>
+              <ion-button expand="block" (click)="addTofavorite(product)" color="success">
+                <ion-icon name="star-outline"></ion-icon>
               </ion-button>
             </ion-col>
           </ion-row>

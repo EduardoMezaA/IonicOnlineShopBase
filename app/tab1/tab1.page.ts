@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { Product } from '../models/product.model';
 import { CartService } from '../services/cart.service';
+import { Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
+import { AuthService } from '../services/auth.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
@@ -39,53 +41,13 @@ export class Tab1Page {
     }
   ];
 
-  constructor(private cartService: CartService, private router: Router, private productService: ProductService) {
-    /*this.products.push({
-      name: "Aguacate",
-      price: 100,
-      description: "Lorem ipsum dolor sit amet.",
-      type: "Frutas y Verduras",
-      photo: "https://picsum.photos/500/300?random",
+  constructor(private cartService: CartService, private router: Router, private productService: ProductService,
+    private authService: AuthService, private toastController: ToastController) {
+    this.productService.getProducts().subscribe((products: Product[]) => {
+      this.products = products;
+      this.productsFounds = this.products;
     });
-    this.products.push({
-      name: "Coca Cola",
-      price: 20,
-      description: "Lorem ipsum dolor sit amet.",
-      type: "Abarrotes",
-      photo: "https://picsum.photos/500/300?random"
-    });
-    this.products.push({
-      name: "Jabón Zote",
-      price: 40,
-      description: "Lorem ipsum dolor sit amet.",
-      type: "Limpieza",
-      photo: "https://picsum.photos/500/300?random"
-    });
-    this.products.push({
-      name: "Aspirina",
-      price: 50,
-      description: "Lorem ipsum dolor sit amet.",
-      type: "Farmacia",
-      photo: "https://picsum.photos/500/300?random"
-    });*/
 
-    this.products = this.productService.getProducts();
-    this.productsFounds = this.products;
-
-  }
-  public refreshProducts() {
-    this.products = this.productService.getProducts();
-    this.productsFounds = this.products;
-  }
-  
-
-  public openAddProductPage(){
-    this.router.navigate(['/add-product']);
-    
-  }
-
-  public openUpdateProductPage(index: number) {
-    this.router.navigate(['/add-product', { index: index }]);
   }
 
   public getColor(type: string): string {
@@ -105,15 +67,64 @@ export class Tab1Page {
     );
   }
 
-  async removeProduct(producto: Product) {
-    this.products = await this.productService.confirmRemoveProduct(this.products, producto);
-  }
-
   public addToCart(product: Product, i: number) {
     product.photo = product.photo + i;
     this.cartService.addToCart(product);
     console.log(this.cartService.getCart());
   }
 
+  async deleteProduct(id: string){
+    this.productService.removeProduct(id).then(async (result)=>{
+      if(result === 'success'){
+        console.log("Producto eliminado correctamente");
+        const toast = await this.toastController.create({
+          message: 'Producto eliminado correctamente',
+          duration: 2000, // Duración de 2 segundos
+          position: 'top' // Posición superior
+        });
+        toast.present();
+      }else{
+        console.log("Nigger");
+      }
+     })
+     .catch((error)=>{
+      console.log("Error");
+     });
+  }
+
+  // public openUpdateProductPage(id: string) {
+  //   this.router.navigate(['/update-product', { id: id }]);
+  // }
+
+  public openUpdateProductPage(id: string) {
+    this.router.navigate(['/add-product', { id: id }]);
+  }
+
+  //Scheiß nochmal auf chinesische Niggas und Juden
+
+  addTofavorite(product:Product){
+    this.cartService.addToFavorites(product);
+    this.presentToast2("Se añadio a favoritos");
+  }
+
+  async presentToast2(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 1000, // Duración en milisegundos
+      position: 'bottom', // Posición del toast (puedes cambiarla)
+    });
+    toast.present();
+  }
+
+  //********************************************** */
+  openProductAddPage() {
+    this.router.navigate(['/add-product']); // Asume que la ruta 'product-add' existe para añadir productos.
+  }
+
+  public logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+  
 
 }

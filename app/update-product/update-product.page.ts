@@ -4,30 +4,20 @@ import { ProductService } from '../services/product.service';
 import { ToastController } from '@ionic/angular';
 import {  ActivatedRoute, Router } from '@angular/router';
 
-
 @Component({
-  selector: 'app-add-product',
-  templateUrl: './add-product.page.html',
-  styleUrls: ['./add-product.page.scss'],
+  selector: 'app-update-product',
+  templateUrl: './update-product.page.html',
+  styleUrls: ['./update-product.page.scss'],
 })
-export class AddProductPage {
+export class UpdateProductPage{
 
   public productForm: FormGroup;
   isUpdateEnabled: boolean = false;
-  //productIndexToUpdate: number = -1;
+  productIndexToUpdate: number = -1;
 
   constructor(private formBuilder: FormBuilder, private productService: ProductService,
     private toastController: ToastController, private router: Router,
     private route: ActivatedRoute) {
-
-      // this.route.params.subscribe(params => {
-      //   // Aquí puedes realizar acciones cada vez que los parámetros de la ruta cambien
-      //   const productId = params['id'];
-      //   console.log('ID del producto:', productId);
-      //   const aaaa = this.productService.obtenerDatosProducto(productId);
-      //   this.productForm.patchValue(aaaa);
-      //   this.isUpdateEnabled = true;
-      // });
 
     this.productForm = this.formBuilder.group({
       name: ['', Validators.required],
@@ -38,11 +28,28 @@ export class AddProductPage {
     });
   }
 
-  async saveProduct() {
+  async yeetProduct() {
     if (this.productForm.valid) {
       const product = this.productForm.value;
-
-     this.productService.saveProduct(product)
+      /*
+      this.productService.saveProduct(product).subscribe({
+        next: (response) => {
+          // next callback
+          console.log('Producto guardado exitosamente:', response);
+          // Aquí puedes realizar cualquier acción adicional después de guardar el producto
+        },
+        error: (error) => {
+          // error callback
+          console.error('Error al guardar el producto:', error);
+          // Aquí puedes manejar el error de guardar el producto
+        },
+        complete: () => {
+          // complete callback
+          console.log('Subscription completed.');
+        }
+      });
+      */
+     this.productService.updateProduct(product)
      .then(async (result)=>{
       if(result === 'success'){
         console.log("Producto guardado correctamente");
@@ -68,5 +75,6 @@ export class AddProductPage {
     // Redirigir a la pestaña tab1
     this.router.navigate(['/tabs/tab1']);
   }
+
 
 }

@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { Observable, of } from 'rxjs';
 import { Product } from '../models/product.model';
+import { AngularFirestore, AngularFirestoreDocument, DocumentSnapshot } from '@angular/fire/compat/firestore';
+import { AngularFirestoreCollection } from '@angular/fire/compat/firestore';
+import { AlertController } from '@ionic/angular';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
+  private products: Observable <Product[]>;
+  private productCollection: AngularFirestoreCollection<Product>;
 
-  private products: Product[] = [];
-  public productsFounds: Product[] = [];
-  isUpdateEnabled: boolean = false;
-
-  constructor(private alertController: AlertController) { 
-
+  constructor(private firestore: AngularFirestore,
+    private alertController: AlertController) {
+    /*
     this.products.push({
       name: "Aguacate",
       price: 100,
@@ -41,39 +44,44 @@ export class ProductService {
       type: "Farmacia",
       photo: "https://picsum.photos/500/300?random"
     });
-
+    */
+   this.productCollection = this.firestore.collection<Product>('products');
+   this.products = this.productCollection.valueChanges();
   }
 
-  public addProduct(p: Product): Product[] {
-    this.products.push(p);
-    return this.products;
+  saveProduct(product: Product): Promise<string> {
+    //this.products.push(product);
+    //return of(product);
+    return this.productCollection.add(product)
+    .then((doc)=>{
+      console.log("Producto añadido " + doc.id);
+      const productoRef = this.productCollection.doc(doc.id);
+      productoRef.update({ id: doc.id });
+      return "success";
+    })
+    .catch((error)=>{
+      console.log("Error al añadir el producto"+error);
+      return "error";
+    });
   }
 
-  public removeProduct(pos: number): Product[] {
-    this.products.splice(pos, 1);
-    return this.products;
+  async updateProduct(product: Product): Promise<string>{
+    console.log('el id del producto es: ' + product.id);
+    return this.productCollection.doc(product.id).update(product)
+    .then((doc)=>{
+      console.log("Producto actualizado " + product.id);
+      return "success";
+    })
+    .catch((error)=>{
+      console.log("Error al actualizar el producto" + error);
+      return "error";
+    });
   }
 
-  public refreshProducts() {
-    this.products = this.getProducts();
-    this.productsFounds = this.products;
-  }
-
-  
-  public updateProduct(pos: number, p: Product): Product[] {
-    if (pos >= 0 && pos < this.products.length) {
-      this.products[pos] = p;
-    }
-    return this.products;
-  }
-
-  public getProducts(): Product[] {
-    return this.products;
-  }
-
-  async confirmRemoveProduct(productos: Product[], producto: Product): Promise<Product[]> {
-    
-
+  async removeProduct(id: string): Promise<string>{
+    console.log('el id del producto es: ' + id);
+    const documentRef = this.firestore.collection('products').doc(id);
+    let yeet: string = "mojarra";
     const alert = await this.alertController.create({
       header: 'Confirmar Eliminación',
       message: '¿Estás seguro de que quieres eliminar este producto?',
@@ -89,17 +97,30 @@ export class ProductService {
         {
           text: 'Eliminar',
           handler: () => {
-            const pos = productos.indexOf(producto);
-            if (pos !== -1) {
-              productos.splice(pos, 1);
-            }
+            return documentRef.delete().then((doc)=>{
+              console.log("Producto eliminado"+id);
+              yeet = "success";
+            })
+            .catch((error)=>{
+              console.log("Error al eliminar el producto"+error);
+              yeet = "error";
+            });
           }
         }
       ]
     });
     await alert.present();
-    return productos;
-  }
+    return yeet;
+  }
 
-  
+  // obtenerDatosProducto(idProducto: string): Observable<Product> {
+  //   const productDocument: AngularFirestoreDocument<Product> = this.firestore.collection('productos').doc(idProducto);
+  //   return productDocument.valueChanges();
+  // }
+
+
+  getProducts(): Observable<Product[]> {
+    //return of(this.products);
+    return this.products;
+  }
 }

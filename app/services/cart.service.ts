@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Cart, Product, CartItem } from '../models/product.model';
+import { Buy } from '../models/buy.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,9 @@ export class CartService {
     total: 0,
     itemCount: 0
   };
+  public favoriteItems:Product[]=[];
+  public buys:Buy[] = [];
+  public zaza: any;
 
   constructor() { }
 
@@ -62,6 +66,57 @@ export class CartService {
       // Actualiza el total y la cantidad de artículos
       this.cart.total = this.calculateTotal(this.cart);
       this.cart.itemCount = this.calculateItemCount(this.cart);
+    }
+  }
+
+  isEmpty(): boolean {
+    return this.cart.total === 0;
+  }
+
+  clearCart() {
+    this.zaza = this.cart.total;
+    
+    const dirtyCrackHouse: Buy = {
+      total: this.cart.total,
+      date: new Date() // Fecha actual
+    };
+    this.buys.push(dirtyCrackHouse); // Agrega la nueva compra al historial de compras
+    this.cart ={
+      items: [],
+      total: 0,
+      itemCount: 0
+    }
+    return this.cart;
+  }
+
+  thatshitgonemad(){
+    return this.zaza;
+  }
+
+  getBuys(){
+    return this.buys;
+  }
+
+
+  // Mein reich, verdammte Juden aaaaa Stirb, ihr Wichser
+
+  addToFavorites(product: Product) {
+    const existingProduct = this.favoriteItems.find((item) => item.name === product.name);
+
+    if (!existingProduct) {
+      this.favoriteItems.push(product);
+      console.log('Producto agregado a favoritos:', product);
+    }
+  }
+
+  getFavoriteItems() {
+    return this.favoriteItems;
+  }
+
+  removeFromFavorites(product: Product) {
+    const index = this.favoriteItems.indexOf(product);
+    if (index !== -1) {
+      this.favoriteItems.splice(index, 1);
     }
   }
 }

@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Añadir producto</ion-title>
+    <ion-title>Actualizar producto</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -16,7 +16,7 @@
 
   <ion-card>
     <ion-card-content>
-      <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
+      <form [formGroup]="productForm" (ngSubmit)="yeetProduct()">
         <ion-list lines="full">
           <ion-item>
             <ion-label position="floating">Nombre</ion-label>
