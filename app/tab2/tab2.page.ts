@@ -61,7 +61,7 @@ export class Tab2Page {
     this.presentAlert();
     this.cart = this.cartService.clearCart();
   }
-//fass es nicht an, ihr verdammten Juden, ihr Wichser
+//alert
   async presentAlert() {
     const alert = await this.alertController.create({
       header: '¡Atención!',

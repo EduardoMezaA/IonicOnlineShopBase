@@ -20,15 +20,6 @@ export class AddProductPage {
     private toastController: ToastController, private router: Router,
     private route: ActivatedRoute) {
 
-      // this.route.params.subscribe(params => {
-      //   // Aquí puedes realizar acciones cada vez que los parámetros de la ruta cambien
-      //   const productId = params['id'];
-      //   console.log('ID del producto:', productId);
-      //   const aaaa = this.productService.obtenerDatosProducto(productId);
-      //   this.productForm.patchValue(aaaa);
-      //   this.isUpdateEnabled = true;
-      // });
-
     this.productForm = this.formBuilder.group({
       name: ['', Validators.required],
       price: ['', Validators.required],
@@ -53,7 +44,7 @@ export class AddProductPage {
         });
         toast.present();
       }else{
-        console.log("Nigger");
+        console.log("No sirve");
       }
      })
      .catch((error)=>{

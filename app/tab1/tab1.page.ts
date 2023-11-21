@@ -84,7 +84,7 @@ export class Tab1Page {
         });
         toast.present();
       }else{
-        console.log("Nigger");
+        console.log("No sirve");
       }
      })
      .catch((error)=>{
@@ -92,15 +92,11 @@ export class Tab1Page {
      });
   }
 
-  // public openUpdateProductPage(id: string) {
-  //   this.router.navigate(['/update-product', { id: id }]);
-  // }
-
   public openUpdateProductPage(id: string) {
     this.router.navigate(['/add-product', { id: id }]);
   }
 
-  //Scheiß nochmal auf chinesische Niggas und Juden
+  //A la grande le puse cuca 
 
   addTofavorite(product:Product){
     this.cartService.addToFavorites(product);

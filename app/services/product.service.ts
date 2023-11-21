@@ -113,11 +113,6 @@ export class ProductService {
     return yeet;
   }
 
-  // obtenerDatosProducto(idProducto: string): Observable<Product> {
-  //   const productDocument: AngularFirestoreDocument<Product> = this.firestore.collection('productos').doc(idProducto);
-  //   return productDocument.valueChanges();
-  // }
-
 
   getProducts(): Observable<Product[]> {
     //return of(this.products);

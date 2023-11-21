@@ -76,11 +76,11 @@ export class CartService {
   clearCart() {
     this.zaza = this.cart.total;
     
-    const dirtyCrackHouse: Buy = {
+    const yoYottyTakeAWhiffOfThis: Buy = {
       total: this.cart.total,
       date: new Date() // Fecha actual
     };
-    this.buys.push(dirtyCrackHouse); // Agrega la nueva compra al historial de compras
+    this.buys.push(yoYottyTakeAWhiffOfThis); // Agrega la nueva compra al historial de compras
     this.cart ={
       items: [],
       total: 0,
@@ -98,7 +98,7 @@ export class CartService {
   }
 
 
-  // Mein reich, verdammte Juden aaaaa Stirb, ihr Wichser
+  // aaaa
 
   addToFavorites(product: Product) {
     const existingProduct = this.favoriteItems.find((item) => item.name === product.name);
